@@ -1,7 +1,7 @@
 import express from "express"
 import cors from "cors"
-import { Client } from "./redisClient.js"
-
+// import { Client } from "./redisClient.js"
+import {limiter} from "./middlewares/rateLimiter.js"
 const app = express()
 
 app.use(cors({
@@ -9,6 +9,9 @@ app.use(cors({
     credentials: true
 }))
 
-Client.on('error', (err) => console.log('Redis Client Error', err));
+// Client.on('error', (err) => console.log('Redis Client Error', err));
+
+app.use(limiter)
+
 
 export {app}
