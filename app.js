@@ -1,10 +1,10 @@
-import express from "express"
+import express, { Router } from "express"
 import cors from "cors"
 // import { Client } from "./redisClient.js"
 import {limiter} from "./middlewares/rateLimiter.js"
 import helmet from "helmet"
 import compression from "compression"
-
+// import { Router } from "express"
 
 const app = express()
 
@@ -18,5 +18,6 @@ app.use(cors({
 app.use(limiter)
 app.use(helmet)
 app.use(compression())
+
 
 export {app}

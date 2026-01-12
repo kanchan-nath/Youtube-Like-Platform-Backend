@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, {Schema} from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     userName:{
         type: String,
         required: [true, "Username is required"],
@@ -39,11 +39,11 @@ const userSchema = new mongoose.Schema({
         trim: true,
     },
     watchHistory:[{
-        type: new mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Video"
     }],
     plan:{
-        type: new mongoose.Schema.Types.ObjectId,
+        type:  Schema.Types.ObjectId,
         ref: "Plan"
     }
 },{timestamps:true})
