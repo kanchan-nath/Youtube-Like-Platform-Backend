@@ -27,11 +27,11 @@ const userSchema = new Schema({
     },
     avatar:{
         type: String,
-        required: [true, "Avatar is required"],
+        // required: [true, "Avatar is required"],
     },
     coverImage: {
         type: String,
-        required: [true, "Cover Image is required"],
+        // required: [true, "Cover Image is required"],
     },
     age:{
         type: Number,

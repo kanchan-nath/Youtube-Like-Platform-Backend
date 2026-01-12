@@ -5,14 +5,7 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 import { User } from "../models/user.model.js";
 
 const registerUser = asyncHandeler(async (req, res) =>{
-    const {
-        userName,
-        email,
-        fullName,
-        password,
-        age,
-
-    } = req.body
+    const {userName, email, fullName, password, age} = req.body
 
     if(!userName || !email || !fullName || !password || !age ){
         throw new ApiError(400, "All fields are required")
@@ -22,7 +15,30 @@ const registerUser = asyncHandeler(async (req, res) =>{
         $or: [{userName}, {email}]
     })
 
-    console.log("Hi",existedUser)
+    if(existedUser){
+        throw new ApiError(400, "User already registered with username or email")
+    }
+
+    const avatarLocalFilePath = req.files?.avatar[0]?.path
+    const coverImageLocalFilePath = req.files?.coverImage[0]?.path
+    console.log(avatarLocalFilePath)
+    
+    const avatar = await cloudinaryUpload(avatarLocalFilePath)
+    const coverImage = await cloudinaryUpload(coverImageLocalFilePath)
+
+
+    const user = await User.create({
+        userName: userName.toLowerCase(),
+        fullName,
+        email,
+        age,
+        password
+    })
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, user, "User registered succesfully !"))
+
 })
 
 export {
