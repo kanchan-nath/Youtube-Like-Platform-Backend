@@ -3,6 +3,7 @@ import { asyncHandeler } from "../utils/asyncHandeler.js"
 import {ApiError} from "../utils/ApiError.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 import { User } from "../models/user.model.js";
+import {cloudinaryUpload} from "../utils/cloudinary.js"
 
 const registerUser = asyncHandeler(async (req, res) =>{
     const {userName, email, fullName, password, age} = req.body
@@ -21,7 +22,6 @@ const registerUser = asyncHandeler(async (req, res) =>{
 
     const avatarLocalFilePath = req.files?.avatar[0]?.path
     const coverImageLocalFilePath = req.files?.coverImage[0]?.path
-    console.log(avatarLocalFilePath)
     
     const avatar = await cloudinaryUpload(avatarLocalFilePath)
     const coverImage = await cloudinaryUpload(coverImageLocalFilePath)
@@ -32,7 +32,9 @@ const registerUser = asyncHandeler(async (req, res) =>{
         fullName,
         email,
         age,
-        password
+        password,
+        avatar: avatar?.url,
+        coverImage: coverImage?.url
     })
 
     return res

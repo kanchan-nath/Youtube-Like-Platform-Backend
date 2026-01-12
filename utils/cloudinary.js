@@ -1,6 +1,6 @@
 import {v2 as cloudinary} from "cloudinary"
 import fs from "fs"
-import { upload } from "../middlewares/multer.middleware"
+import { upload } from "../middlewares/multer.middleware.js"
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -9,7 +9,7 @@ cloudinary.config({
 })
 
 const cloudinaryUpload = async (localFilePath)=>{
-
+try{
     if(!localFilePath) return null
 
     const getResourceType = (localFilePath)=>{
@@ -30,14 +30,18 @@ const cloudinaryUpload = async (localFilePath)=>{
                          "files"
 
     
-    cloudinary.uploader.upload(localFilePath, {
+    const response = await cloudinary.uploader.upload(localFilePath, {
         folder: targetFolder,
         use_filename: true,
         unique_filename: false,
         overwrite: true,
         resource_type: resourceType
     })
-
+    fs.unlinkSync(localFilePath)
+    return response
+}catch(error){
+    fs.unlinkSync(localFilePath)
+    return null 
 }
-
+}
 export {cloudinaryUpload}

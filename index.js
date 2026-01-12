@@ -11,9 +11,9 @@ const PORT  = process.env.PORT
 connectMongoDB()
 .then(() =>{
     app.listen(PORT, ()=>{
-        console.log(`Server is running at port ${process.env.PORT}`)
+        console.log(`Server is running at port ${process.env.PORT}\n`)
     })
 })
 .catch((error) =>{
-    console.log("MONGO DB connection failed !!! ", error);
+    console.log("MONGO DB connection failed !!! \n", error);
 })
