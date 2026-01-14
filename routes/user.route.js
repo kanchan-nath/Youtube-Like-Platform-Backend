@@ -3,6 +3,7 @@ import {
 } from "../controllers/user.controller.js"
 import { Router } from "express"
 import {upload} from "../middlewares/multer.middleware.js"
+import {emailOTPVerification} from "../middlewares/email.middleware.js"
 const router = Router()
 
 router.route("/register").post(
@@ -18,5 +19,6 @@ router.route("/register").post(
     ]),
     registerUser
 )
+router.route("/otp/verify").post(emailOTPVerification)
 
 export default router

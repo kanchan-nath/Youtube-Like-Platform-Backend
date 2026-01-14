@@ -21,7 +21,8 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 // app.use(compression())
 
 import userRouter from "../src/routes/user.route.js"
-
+import otpRouter from "../src/routes/emailOTP.route.js"
 app.use("/api/v1/auth", userRouter )
+app.use("/api/v1/auth", otpRouter)
 
 export {app}
