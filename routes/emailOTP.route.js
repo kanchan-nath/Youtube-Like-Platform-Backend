@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { emailOTPVerification } from "../middlewares/email.middleware.js";
+import { sendOTPToEmail, verifyOTP } from "../middlewares/email.middleware.js";
 
 const router = Router()
 
-router.route("/verify-otp").post(emailOTPVerification)
+router.route("/send-otp").post(sendOTPToEmail)
+router.route("/verify-otp").post(verifyOTP)
 
 export default router

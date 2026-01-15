@@ -26,7 +26,6 @@ const registerUser = asyncHandeler(async (req, res) =>{
     const avatar = await cloudinaryUpload(avatarLocalFilePath)
     const coverImage = await cloudinaryUpload(coverImageLocalFilePath)
 
-
     const user = await User.create({
         userName: userName.toLowerCase(),
         fullName,
