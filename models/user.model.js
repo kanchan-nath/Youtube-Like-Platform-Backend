@@ -46,11 +46,11 @@ const userSchema = new Schema({
         type:  Schema.Types.ObjectId,
         ref: "Plan"
     },
-    expiresAt:{
-        type: Date,
-        default: Date.now,
-        expires: 100,
-    },
+    // expiresAt:{
+    //     type: Date,
+    //     default: Date.now,
+    //     expires: 100,
+    // },
     isVerified: {
         type: Boolean,
         default: false,

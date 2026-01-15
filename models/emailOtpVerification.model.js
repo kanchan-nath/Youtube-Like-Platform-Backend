@@ -9,11 +9,11 @@ const emailOTPVerificationSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    expiresAt:{
-        type:Date,
-        default: Date.now,
-        expires: 100,
-    }
+    // expiresAt:{
+    //     type:Date,
+    //     default: Date.now,
+    //     expires: 100000,
+    // }
 },{timestamps:true})
 
 export const EmailOTPVerification = new mongoose.model("EmailOTPVerification", emailOTPVerificationSchema)

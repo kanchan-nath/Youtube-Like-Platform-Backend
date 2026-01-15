@@ -6,9 +6,9 @@ import { User } from "../models/user.model.js";
 import {cloudinaryUpload} from "../utils/cloudinary.js"
 
 const registerUser = asyncHandeler(async (req, res) =>{
-    const {userName, email, fullName, password, age, otp} = req.body
+    const {userName, email, fullName, password, age} = req.body
 
-    if(!userName || !email || !fullName || !password || !age || !otp ){
+    if(!userName || !email || !fullName || !password || !age ){
         throw new ApiError(400, "All fields are required")
     }
 
@@ -38,7 +38,7 @@ const registerUser = asyncHandeler(async (req, res) =>{
 
     return res
     .status(200)
-    .json(new ApiResponse(200, user, "User registered succesfully !"))
+    .json(new ApiResponse(200, user, "Otp Send to email!"))
 
 })
 
