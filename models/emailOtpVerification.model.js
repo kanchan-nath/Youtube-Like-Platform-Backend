@@ -17,9 +17,12 @@ const emailOTPVerificationSchema = new mongoose.Schema({
 },{timestamps:true})
 
 emailOTPVerificationSchema.pre("save", async function (next){
-    if (!this.cachedOTP.isModified("cachedOTP")) return next()
-    bcrypt.hash(this.cachedOTP, process.env.SALT_ROUND)
-    next()
+    if (!this.isModified("cachedOTP")) return next()
+    bcrypt.hash(this.cachedOTP, 10)
 })
+
+emailOTPVerificationSchema.methods.isOTPCorrect = async function (OTPFromUser){
+    return await bcrypt.compare(OTPFromUser, this.cachedOTP)
+}
 
 export const EmailOTPVerification = new mongoose.model("EmailOTPVerification", emailOTPVerificationSchema)

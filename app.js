@@ -5,6 +5,7 @@ import {limiter} from "./middlewares/rateLimiter.middleware.js"
 import helmet from "helmet"
 import compression from "compression"
 // import { Router } from "express"
+import cookieParser from "cookie-parser"
 
 const app = express()
 
@@ -12,6 +13,7 @@ app.use(cors({
     origin: process.env.CORS_ORIGIN,
     credentials: true
 }))
+app.use(cookieParser())
 
 // Client.on('error', (err) => console.log('Redis Client Error', err));
 app.use(express.json({ limit: "16kb" }))
