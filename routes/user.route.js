@@ -27,8 +27,7 @@ router.route("/register").post(
 )
 // router.route("/otp/verify").post(emailOTPVerification)
 router.route("/login").post(deviceInformation, logInUser)
-router.route("/logout").post(verifyJWT, logOutUser,
-)
+router.route("/logout").post(verifyJWT, logOutUser)
 router.route("/refresh-token").post(refreshAccessToken)
 
 

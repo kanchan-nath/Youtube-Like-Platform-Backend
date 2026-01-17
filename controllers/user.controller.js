@@ -81,7 +81,7 @@ const logInUser = asyncHandeler(async(req,res) =>{
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
-    const {accessToken, refreshToken} = generateAccessAndRefreshTokens(user._id)
+    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id)
 
     const {
         browserName,
@@ -106,7 +106,7 @@ const logInUser = asyncHandeler(async(req,res) =>{
 
     const options = {
         httpOnly: true,
-        secure: true
+        secure: false
     }
 
     return res
@@ -127,7 +127,7 @@ const logOutUser = asyncHandeler(async (req, res)=>{
         req.user._id,
         {
             $unset:{
-                refreshToken
+                refreshToken:1
             }
         },
         {
@@ -137,7 +137,7 @@ const logOutUser = asyncHandeler(async (req, res)=>{
 
     const options = {
         httpOnly: true,
-        secure: true
+        secure: false
     }
 
     return res

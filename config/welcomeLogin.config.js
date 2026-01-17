@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer"
+import { ApiError } from "../utils/ApiError.js"
 const transporter = nodemailer.createTransport({
     service: process.env.AUTH_SERVICE,
     host: process.env.SERVER_HOST,
@@ -20,13 +21,13 @@ const sendDeviceInformation = async(
     ip,
     timestamp
 ) => {
-
-   await transporter.sendMail({
-        from: process.env.AUTH_EMAIL,
-        to: email,
-        subject: "Welcome to Youtube like platform backend",
-        text: "Welcome to Youtube like platform backend",
-        html: `
+    try {
+        await transporter.sendMail({
+            from: process.env.AUTH_EMAIL,
+            to: email,
+            subject: "Welcome to Youtube like platform backend",
+            text: "Welcome to Youtube like platform backend",
+            html: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,8 +88,11 @@ const sendDeviceInformation = async(
 </body>
 </html>
 `
-    })
- 
+        })
+
+    } catch (error) {
+        throw new ApiError(400, "Device Information cannot send to email")
+    }
 }
 
 export { sendDeviceInformation }
