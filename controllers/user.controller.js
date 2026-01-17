@@ -5,6 +5,7 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 import { User } from "../models/user.model.js";
 import {cloudinaryUpload} from "../utils/cloudinary.js"
 import jwt from "jsonwebtoken"
+import {sendDeviceInformation} from "../config/welcomeLogin.config.js"
 
 const generateAccessAndRefreshTokens = async (userId) => {
     const user = await User.findById(userId)
@@ -80,11 +81,28 @@ const logInUser = asyncHandeler(async(req,res) =>{
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
-    if(logInUser){
-        
-    }
-
     const {accessToken, refreshToken} = generateAccessAndRefreshTokens(user._id)
+
+    const {
+        browserName,
+        browserVersion,
+        osName,
+        osVersion,
+        deviceType,
+        ip,
+        timestamp
+    } = req.deviceInfo
+
+    await sendDeviceInformation(
+        loggedInUser.email,
+        browserName,
+        browserVersion,
+        osName,
+        osVersion,
+        deviceType,
+        ip,
+        timestamp,
+    )
 
     const options = {
         httpOnly: true,

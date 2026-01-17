@@ -8,6 +8,7 @@ import {
 import { Router } from "express"
 import {upload} from "../middlewares/multer.middleware.js"
 // import {emailOTPVerification} from "../middlewares/email.middleware.js"
+import { deviceInformation } from "../middlewares/deviceInformation.middleware.js"
 import verifyJWT from "../middlewares/auth.middleware.js"
 const router = Router()
 
@@ -25,7 +26,7 @@ router.route("/register").post(
     registerUser
 )
 // router.route("/otp/verify").post(emailOTPVerification)
-router.route("/login").post(logInUser)
+router.route("/login").post(deviceInformation, logInUser)
 router.route("/logout").post(verifyJWT, logOutUser,
 )
 router.route("/refresh-token").post(refreshAccessToken)

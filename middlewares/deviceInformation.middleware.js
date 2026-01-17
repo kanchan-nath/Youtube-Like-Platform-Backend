@@ -1,40 +1,24 @@
-import UAParser from "ua-parser-js";
-import { asyncHandeler } from "../utils/asyncHandeler";
-import { parse } from "dotenv";
-import { version } from "mongoose";
-import { ApiResponse } from "../utils/ApiResponse";
+import { UAParser } from "ua-parser-js"
 
-const deviceInformation = asyncHandeler(async(requestAnimationFrame, res)=>{
-    const IP = req.ip || req.headers["x-forwarded-for"].split(",")[0] || req.connection.remoteAddress || req.socket.remoteAddress;
+const deviceInformation = (req, res, next) => {
+    const ip =
+        req.headers["x-forwarded-for"]?.split(",")[0] ||
+        req.ip ||
+        req.socket.remoteAddress
 
-    const userAgentString = req.headers["user-agent"]
-
-    const parser = new UAParser(userAgentString)
+    const parser = new UAParser(req.headers["user-agent"])
     const result = parser.getResult()
 
-    const loginInfo = {
-        ip: IP,
-        browser:{
-            name: result.browser.name,
-            version: result.browser.version
-        },
-        os:{
-            name: result.os.name,
-            version: result.os.version,
-        },
-        device:{
-            type: result.device.type || "desktop",
-            vendor: result.device.vendor,
-            model: result.device.model
-        },
+    req.deviceInfo = {
+        ip,
+        browserName: result.browser.name,
+        browserVersion: result.browser.version,
+        osName: result.os.name,
+        osVersion: result.os.version,
+        deviceType: result.device.type || "desktop",
         timestamp: new Date()
-
-        
     }
-    console.log('Login Info:', loginInfo);
+    next()
+}
 
-    return res
-    .status(200)
-    .jspn(new ApiResponse(200, loginInfo, "Device information send to email"))
-})
-export {deviceInformation}
+export { deviceInformation }
