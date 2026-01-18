@@ -3,6 +3,10 @@ import {
     logInUser,
     logOutUser,
     refreshAccessToken,
+    resetPassword,
+    getUserProfile,
+    updateUserProfile,
+    updateUserFiles,
 
 } from "../controllers/user.controller.js"
 import { Router } from "express"
@@ -29,6 +33,22 @@ router.route("/register").post(
 router.route("/login").post(deviceInformation, logInUser)
 router.route("/logout").post(verifyJWT, logOutUser)
 router.route("/refresh-token").post(refreshAccessToken)
+router.route("/reset-password").post(verifyJWT, resetPassword)
+router.route("/get-user-profile").get(verifyJWT, getUserProfile)
+router.route("/update-user-profile").patch(verifyJWT, upload.none(),  updateUserProfile)
+router.route("/update-user-profile-files").patch(verifyJWT, 
+    upload.fields([
+        {
+            name: "avatar",
+            maxCount: 1
+        },
+        {
+            name: "coverImage",
+            maxCount: 1
+        }
+    ]),
+    updateUserFiles
+)
 
 
 

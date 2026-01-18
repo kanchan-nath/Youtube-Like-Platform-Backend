@@ -196,15 +196,110 @@ const refreshAccessToken = asyncHandeler(async (req, res) => {
 })
 
 const forgetPassword = asyncHandeler(async(req, res) =>{
-    const {email} = req.body
+    const {email, newPassword, repeatNewPassword} = req.body
     
-    if(!email){
-        throw new ApiError(400, "Email is required")
+    if(!email || !newPassword || !repeatNewPassword){
+        throw new ApiError(400, "All fields are required")
     }
+
+    const user = await User.findOne({email:email})
+
+    if(!user){
+        throw new ApiError(400, "User doesnot exit")
+    }
+
+    
+
+
      
     return res
     .status(200)
     .json(new ApiResponse(200, {}, "Plzz check your email for change password"))
+})
+
+const resetPassword  = asyncHandeler(async(req, res)=>{
+    const {oldPassword, newPassword, repeatNewPassword} = req.body
+
+    if(!oldPassword || !newPassword || !repeatNewPassword){
+        throw new ApiError(400, "All fields are required")
+    }
+
+    const user = await User.findById(req.user?._id)
+
+    const isValidPassword = await user.isPasswordCorrect(oldPassword)
+
+    if(!isValidPassword){
+        throw new ApiError(400, "Invalid Password")
+    }
+
+    if(newPassword !== repeatNewPassword){
+        throw new ApiError(400, "New Password and Repeat Password should be same")
+    }
+
+    user.password = newPassword
+    await user.save()
+
+    return res
+    .status(200)
+    .json( new ApiResponse(200, user.password, "Password Reset succesfully"))
+})
+
+const getUserProfile = asyncHandeler(async(req, res)=>{
+    const user = await User.findById(req.user?._id).select("-refreshToken")
+
+    if(!user){
+        throw new ApiError(400, "User not found")
+    }
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200,user, "User profile fetched succesfully" ))
+})
+
+const updateUserProfile = asyncHandeler(async(req, res)=>{
+    console.log(req.body)
+    const {userName, email, fullName, age} = req.body
+
+    const user = await User.findById(req.user?._id)
+
+    if(!user){
+        throw new ApiError(400, "uesr not found")
+    }
+
+    user.userName = userName || user.userName
+    user.email = email || user.email
+    user.fullName = fullName || user.fullName
+    user.age = age || user.age
+    await user.save()
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, "Uesr Profile updated successfully"))
+})
+
+const updateUserFiles = asyncHandeler(async(req, res)=>{
+
+    const avatarLocalFilePath = req.files?.avatar?.[0]?.path
+    const coverImageLocalFilePath = req.files?.coverImage?.[0]?.path
+
+
+    const avatar = await cloudinaryUpload(avatarLocalFilePath)
+    const coverImage = await cloudinaryUpload(coverImageLocalFilePath)
+
+   const user = await User.findByIdAndUpdate(
+    req.user?._id,
+    {
+        avatar: avatar?.url,
+        coverImage: coverImage?.url
+    },
+    {
+        new: true
+    }
+)
+return res
+.status(200)
+.json(new ApiResponse(200, user, "Files update successfully"))
+
 })
 
 export {
@@ -212,4 +307,9 @@ export {
     logInUser,
     logOutUser,
     refreshAccessToken,
+    forgetPassword,
+    resetPassword,
+    getUserProfile,
+    updateUserProfile,
+    updateUserFiles
 }
