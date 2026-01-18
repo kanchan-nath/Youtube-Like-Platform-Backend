@@ -7,6 +7,7 @@ import {
     getUserProfile,
     updateUserProfile,
     updateUserFiles,
+    accountDelete
 
 } from "../controllers/user.controller.js"
 import { Router } from "express"
@@ -49,7 +50,7 @@ router.route("/update-user-profile-files").patch(verifyJWT,
     ]),
     updateUserFiles
 )
-
+router.route("/delete").delete(verifyJWT, accountDelete)
 
 
 export default router

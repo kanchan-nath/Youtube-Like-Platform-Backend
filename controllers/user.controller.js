@@ -35,8 +35,8 @@ const registerUser = asyncHandeler(async (req, res) =>{
         throw new ApiError(400, "User already registered with username or email")
     }
 
-    const avatarLocalFilePath = req.files?.avatar[0]?.path
-    const coverImageLocalFilePath = req.files?.coverImage[0]?.path
+    const avatarLocalFilePath = req.files?.avatar?.[0]?.path
+    const coverImageLocalFilePath = req.files?.coverImage?.[0]?.path
     
     const avatar = await cloudinaryUpload(avatarLocalFilePath)
     const coverImage = await cloudinaryUpload(coverImageLocalFilePath)
@@ -302,6 +302,23 @@ return res
 
 })
 
+const accountDelete = asyncHandeler(async(req, res)=>{
+    const userId = req.user?._id   
+
+    if(!userId){
+        throw new ApiError(400, "User id is  required")
+    }
+
+    const deleteUserAcount = await User.deleteOne({_id: userId });
+
+    if (!deleteUserAcount){
+        throw new ApiError(400, "Account can't be deleted")
+    }
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, deleteUserAcount, "User Account deleted succesfully"))
+})
 export {
     registerUser,
     logInUser,
@@ -311,5 +328,6 @@ export {
     resetPassword,
     getUserProfile,
     updateUserProfile,
-    updateUserFiles
+    updateUserFiles,
+    accountDelete
 }

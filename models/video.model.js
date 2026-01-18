@@ -41,7 +41,7 @@ const videoSchema = new mongoose.Schema({
     expiresAt: {
         type: Date,
         default: Date.now,
-        expires: 120,
+        expires: 1000,
     },
 }, {timestamps:true})
 
