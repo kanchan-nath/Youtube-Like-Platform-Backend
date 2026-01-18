@@ -56,6 +56,13 @@ const deleteVideo = asyncHandeler(async(req, res)=>{
     .json(new ApiResponse(200, deleteVideo, "Video Deleted Succesfully"))
 })
 
+const updateVideoDetails = asyncHandeler(async(req, res)=>{
+    const { title, videoDescription, tag, genre } = req.body
+    const { videoId } = req.params; 
+
+    const video = await Video.findById(videoId)
+})
+
 export {
     uploadVideo,
     deleteVideo
