@@ -18,7 +18,7 @@ const videoSchema = new mongoose.Schema({
     },
     duration:{
         type:Number,
-        required: true
+        // required: true
     },
     views:{
         type: Number,
@@ -33,11 +33,16 @@ const videoSchema = new mongoose.Schema({
     owner:{
         type: new mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required:true
+        // required:true
     },
     genre:[{
         type: String,
-    }]
+    }],
+    expiresAt: {
+        type: Date,
+        default: Date.now,
+        expires: 120,
+    },
 }, {timestamps:true})
 
 export const Video = new mongoose.model("Video", videoSchema)

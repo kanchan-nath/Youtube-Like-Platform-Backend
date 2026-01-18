@@ -15,7 +15,7 @@ app.use(cors({
 }))
 app.use(cookieParser())
 // Client.on('error', (err) => console.log('Redis Client Error', err));
-app.use(express.json({ limit: "16kb" }))
+app.use(express.json({ limit: "8000kb" }))
 app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 // app.use(limiter)
 // app.use(helmet())
@@ -23,7 +23,9 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 
 import userRouter from "../src/routes/user.route.js"
 import otpRouter from "../src/routes/emailOTP.route.js"
+import videoRouter from "../src/routes/video.route.js"
 app.use("/api/v1/auth", userRouter )
 app.use("/api/v1/auth", otpRouter)
+app.use("/api/v1/video", videoRouter )
 
 export {app}
