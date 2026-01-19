@@ -6,7 +6,7 @@ import { cloudinaryUpload } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { json } from "express";
 
-const uploadVideo = asyncHandeler(async(req, res)=>{
+const uploadVideo = asyncHandeler( async(req, res)=>{
     console.log("req.body:", req.body);
     console.log("req.files:", req.files);
     console.log("req.file:", req.file);
