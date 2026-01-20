@@ -60,7 +60,8 @@ const updateVideoDetails = asyncHandeler(async(req, res)=>{
     const { title, videoDescription, tag, genre } = req.body
     const { videoId } = req.params; 
 
-    const video = await Video.findById(videoId)
+    const video = await Video.findById( videoId )
+    
 })
 
 export {
