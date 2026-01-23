@@ -1,6 +1,7 @@
 import {v2 as cloudinary} from "cloudinary"
 import fs from "fs"
 import { upload } from "../middlewares/multer.middleware.js"
+import path from "path"
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -45,3 +46,4 @@ try{
 }
 }
 export {cloudinaryUpload}
+

@@ -10,11 +10,14 @@ const videoSchema = new mongoose.Schema({
     },
     videoFile:{
         type: String,
-        required: [true, "Video File is required"],
+        // required: [true, "Video File is required"],
     },
+    urls:[{
+        type: String
+    }],
     thumbnail: {
         type: String,
-        required: true,
+        // required: true,
     },
     duration:{
         type:Number,
