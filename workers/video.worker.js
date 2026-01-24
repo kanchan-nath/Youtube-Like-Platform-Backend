@@ -1,7 +1,6 @@
 import ffmpeg from "fluent-ffmpeg";
 import { videoQueue } from "../queues/video.queue.js";
 import path from "path"
-// import { promise, resolve } from "dns";
 import { Video } from "../models/video.model.js";
 import { cloudinaryUpload } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -139,14 +138,10 @@ videoQueue.process(async (job) => {
 
             await transcodingVideo(videoLocalFilePath, outputPath, resolution)
 
-            console.log(outputPath)
-
-
             const videoUrl = await cloudinaryUpload(outputPath)
-            console.log(videoUrl)
 
-            Video.findByIdAndUpdate(videoId, {
-                videoFile: videoUrl?.url,
+            await Video.findByIdAndUpdate(videoId, {
+                urls: videoUrl?.url,
             },
                 { new: true }
             )
