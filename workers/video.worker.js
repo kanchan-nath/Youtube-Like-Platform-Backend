@@ -118,6 +118,8 @@ const getVideoDuration = (videoLocalFilePath) => {
 //     })
 // }
 
+// TODO:  HTTP LIVE STREAMING - m3u8 Playlist Creation - Video Delivary
+
 
 videoQueue.process(async (job) => {
     const { videoId, videoLocalFilePath, title } = job.data;
