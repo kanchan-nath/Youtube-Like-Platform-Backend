@@ -3,6 +3,10 @@ import fs from "fs"
 import { upload } from "../middlewares/multer.middleware.js"
 import path from "path"
 
+import dotenv from "dotenv";
+dotenv.config(); // must be first
+
+
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -38,10 +42,11 @@ try{
         overwrite: true,
         resource_type: resourceType
     })
-    fs.unlinkSync(localFilePath)
+    // fs.unlinkSync(localFilePath)
     return response
 }catch(error){
     // fs.unlinkSync(localFilePath)
+    console.error("Cloudinary upload failed:", error);
     return null 
 }
 }

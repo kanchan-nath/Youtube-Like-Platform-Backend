@@ -1,10 +1,11 @@
 import ffmpeg from "fluent-ffmpeg";
 import { videoQueue } from "../queues/video.queue.js";
 import path from "path"
-import { promise, resolve } from "dns";
+// import { promise, resolve } from "dns";
 import { Video } from "../models/video.model.js";
 import { cloudinaryUpload } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import fs from "fs"
 
 const resolutions = [
     {
@@ -39,8 +40,8 @@ const resolutions = [
     }
 ]
 
-const transcodingVideo = async((videoLocalFilePath, outputPath, resolution) => {
-    const result = new promise((resolve, reject) => {
+const transcodingVideo = (videoLocalFilePath, outputPath, resolution) => {
+    const result = new Promise((resolve, reject) => {
         ffmpeg(videoLocalFilePath)
             .output(outputPath)
             .videoCodec('libx264')
@@ -63,13 +64,13 @@ const transcodingVideo = async((videoLocalFilePath, outputPath, resolution) => {
 
     })
     return result
-})
+}
 
 const getVideoDuration = (videoLocalFilePath) => {
-    const result = new promise((resolve, reject) => {
+    const result = new Promise((resolve, reject) => {
         ffmpeg.ffprobe(videoLocalFilePath, (error, metadata) => {
-            if (err) {
-                reject(err);
+            if (error) {
+                reject(error);
             } else {
                 resolve(metadata.format.duration);
             }
@@ -79,7 +80,7 @@ const getVideoDuration = (videoLocalFilePath) => {
 }
 
 const generateThumbnails = (videoLocalFilePath, outputDir, duration)=>{
-    const result = new promise((resolve, reject)=>{
+    const result = new Promise((resolve, reject)=>{
 
         const timestamps = [
             duration * 0.1,
@@ -127,9 +128,9 @@ videoQueue.process(async (job) => {
 
         const duration = await getVideoDuration(videoLocalFilePath)
 
-        const outputDir = path.join(videoLocalFilePath, "transcoded")
+        const outputDir = path.join(path.dirname(videoLocalFilePath), "transcoded")
 
-        if (!fstat.existsSync(outputDir)) {
+        if (!fs.existsSync(outputDir)) {
             fs.mkdirSync(outputDir, { recursive: true });
         }
 
@@ -138,11 +139,14 @@ videoQueue.process(async (job) => {
 
             await transcodingVideo(videoLocalFilePath, outputPath, resolution)
 
+            console.log(outputPath)
+
+
             const videoUrl = await cloudinaryUpload(outputPath)
+            console.log(videoUrl)
 
             Video.findByIdAndUpdate(videoId, {
                 videoFile: videoUrl?.url,
-                duration: Math.floor(duration),
             },
                 { new: true }
             )
@@ -152,7 +156,7 @@ videoQueue.process(async (job) => {
 
         const originalVidoe = await cloudinaryUpload(videoLocalFilePath)
 
-        Video.findByIdAndUpdate(videoId, {
+        await Video.findByIdAndUpdate(videoId, {
             videoFile: originalVidoe?.url,
             isPublished: true
         },
@@ -160,13 +164,15 @@ videoQueue.process(async (job) => {
         )
 
         if(fs.existsSync(outputDir)){
-            fs.mkdirSync(outputDir)
+            fs.rmSync(outputDir, { recursive: true, force: true })
         }
         console.log(`Video processing completed for: ${title}`);
 
-        return res
-        .status(200)
-        .json(new ApiResponse(200, videoId, "Video transcoded successfully"))
+        return {
+            success: true,
+            videoId,
+            message: "Video transcoded successfully"
+        };
 
     } catch (error) {
         console.error(`Error processing video ${videoId}:`, error);

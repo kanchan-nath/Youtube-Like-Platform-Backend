@@ -16,6 +16,4 @@ const connectRedis = async () => {
     }
 }
 
-connectRedis()
-
 export { client, connectRedis }
