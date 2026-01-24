@@ -141,9 +141,14 @@ videoQueue.process(async (job) => {
             const videoUrl = await cloudinaryUpload(outputPath)
 
             await Video.findByIdAndUpdate(
-                videoId, 
+                videoId,
                 {
-                    $push: { urls: videoUrl?.url }
+                    $push: {
+                        urls: {
+                            url: videoUrl?.url,
+                            resolution: resolution.name,
+                        }
+                    }
                 },
                 { new: true }
             )
@@ -153,16 +158,17 @@ videoQueue.process(async (job) => {
             job.progress((resolutions.indexOf(resolution) + 1) / resolutions.length * 100);
         }
 
-        const originalVidoe = await cloudinaryUpload(videoLocalFilePath)
+        const originalVideo = await cloudinaryUpload(videoLocalFilePath)
 
         await Video.findByIdAndUpdate(videoId, {
-            videoFile: originalVidoe?.url,
+            videoFile: originalVideo?.url,
+            duration: duration,
             isPublished: true
         },
             { new: true }
         )
 
-        if(fs.existsSync(outputDir)){
+        if (fs.existsSync(outputDir)) {
             fs.rmSync(outputDir, { recursive: true, force: true })
         }
 
@@ -179,6 +185,13 @@ videoQueue.process(async (job) => {
 
     } catch (error) {
         console.error(`Error processing video ${videoId}:`, error);
+        if (fs.existsSync(outputDir)) {
+            fs.rmSync(outputDir, { recursive: true, force: true });
+        }
+
+        if (fs.existsSync(videoLocalFilePath)) {
+            fs.unlinkSync(videoLocalFilePath);
+        }
 
         await Video.findByIdAndUpdate(videoId, {
             isPublished: false
@@ -190,4 +203,4 @@ videoQueue.process(async (job) => {
 
 console.log('Video transcoding worker started');
 
-export {videoQueue}
+export { videoQueue }

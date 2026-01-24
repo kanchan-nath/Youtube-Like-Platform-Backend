@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { title } from "process";
 
 const videoSchema = new mongoose.Schema({
     title:{
@@ -12,9 +13,13 @@ const videoSchema = new mongoose.Schema({
         type: String,
         // required: [true, "Video File is required"],
     },
-    urls:[{
-        type: String
-    }],
+    urls: [
+        {
+            url: { type: String },
+            resolution: { type: String }
+        }
+    ],
+
     thumbnail: {
         type: String,
         // required: true,
@@ -44,7 +49,7 @@ const videoSchema = new mongoose.Schema({
     // expiresAt: {
     //     type: Date,
     //     default: Date.now,
-    //     expires: 1000,
+    //     expires: 10000,
     // },
 }, {timestamps:true})
 

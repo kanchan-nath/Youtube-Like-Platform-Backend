@@ -15,12 +15,8 @@ const uploadVideo = asyncHandeler( async(req, res)=>{
     }
     const videoLocalFilePath = req.files?.videoFile?.[0]?.path
     const thumbnailLocalFilePath = req.files?.thumbnail?.[0]?.path
-    console.log(videoLocalFilePath)
 
-
-    const videoFile = await cloudinaryUpload(videoLocalFilePath)
     const thumbnail = await cloudinaryUpload(thumbnailLocalFilePath)
-    console.log(videoFile)
 
     const video = await Video.create({
         title: title,
@@ -32,8 +28,6 @@ const uploadVideo = asyncHandeler( async(req, res)=>{
         owner: req.user?._id,
         
     })
-    // video.isPublished = true
-    // await video.save()
 
     videoQueue.add({
         videoId: video._id,
