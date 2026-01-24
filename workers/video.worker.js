@@ -57,7 +57,7 @@ const transcodingVideo = (videoLocalFilePath, outputPath, resolution) => {
                 reject(err);
             })
             .on('progress', (progress) => {
-                console.log(`Processing ${resolution.name}: ${progress.percent}% done`);
+                console.log(`Processing ${resolution.name}: ${Math.floor(progress.percent)}% done`);
             })
             .run()
 
@@ -78,45 +78,45 @@ const getVideoDuration = (videoLocalFilePath) => {
     return result
 }
 
-const generateThumbnails = (videoLocalFilePath, outputDir, duration)=>{
-    const result = new Promise((resolve, reject)=>{
+// const generateThumbnails = (videoLocalFilePath, outputDir, duration)=>{
+//     const result = new Promise((resolve, reject)=>{
 
-        const timestamps = [
-            duration * 0.1,
-            duration * 0.25,
-            duration * 0.5,
-            duration * 0.75,
-            duration * 0.9
-        ]
+//         const timestamps = [
+//             duration * 0.1,
+//             duration * 0.25,
+//             duration * 0.5,
+//             duration * 0.75,
+//             duration * 0.9
+//         ]
 
-        let completed = 0;
+//         let completed = 0;
 
-        timestamps.forEach( (timestamp, index)=>{
-            const outputPath = path.join(outputDir, `thumbnail_${index + 1}.png`);
+//         timestamps.forEach( (timestamp, index)=>{
+//             const outputPath = path.join(outputDir, `thumbnail_${index + 1}.png`);
 
-            ffmpeg(videoLocalFilePath)
-            .screenshot({
-                timestamps: [timestamp],
-                filename: `thumbnail_${index + 1}.png`,
-                folder: outputDir,
-                size: '1280x720'
-            })
-                .on("end", async ()=>{
-                console.log(`Thumbnail ${index + 1} generated at ${timestamp.toFixed(2)}s`);
-                const thumbnail = await cloudinaryUpload(outputPath)
-
-
-                completed++;
-
-                if (completed === timestamps.length) {
-                    resolve(thumbnailPaths);
-                }
-            })
-        })
+//             ffmpeg(videoLocalFilePath)
+//             .screenshot({
+//                 timestamps: [timestamp],
+//                 filename: `thumbnail_${index + 1}.png`,
+//                 folder: outputDir,
+//                 size: '1280x720'
+//             })
+//                 .on("end", async ()=>{
+//                 console.log(`Thumbnail ${index + 1} generated at ${timestamp.toFixed(2)}s`);
+//                 const thumbnail = await cloudinaryUpload(outputPath)
 
 
-    })
-}
+//                 completed++;
+
+//                 if (completed === timestamps.length) {
+//                     resolve(thumbnailPaths);
+//                 }
+//             })
+//         })
+
+
+//     })
+// }
 
 
 videoQueue.process(async (job) => {
@@ -140,11 +140,15 @@ videoQueue.process(async (job) => {
 
             const videoUrl = await cloudinaryUpload(outputPath)
 
-            await Video.findByIdAndUpdate(videoId, {
-                urls: videoUrl?.url,
-            },
+            await Video.findByIdAndUpdate(
+                videoId, 
+                {
+                    $push: { urls: videoUrl?.url }
+                },
                 { new: true }
             )
+
+            fs.unlinkSync(outputPath)
 
             job.progress((resolutions.indexOf(resolution) + 1) / resolutions.length * 100);
         }
@@ -161,6 +165,10 @@ videoQueue.process(async (job) => {
         if(fs.existsSync(outputDir)){
             fs.rmSync(outputDir, { recursive: true, force: true })
         }
+
+        fs.unlinkSync(videoLocalFilePath)
+
+
         console.log(`Video processing completed for: ${title}`);
 
         return {

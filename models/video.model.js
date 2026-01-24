@@ -41,11 +41,11 @@ const videoSchema = new mongoose.Schema({
     genre:[{
         type: String,
     }],
-    expiresAt: {
-        type: Date,
-        default: Date.now,
-        expires: 1000,
-    },
+    // expiresAt: {
+    //     type: Date,
+    //     default: Date.now,
+    //     expires: 1000,
+    // },
 }, {timestamps:true})
 
 export const Video = new mongoose.model("Video", videoSchema)
