@@ -24,7 +24,7 @@ router.route("/upload").post(verifyJWT,
     ]),
     uploadVideo)
 router.route("/delete").delete(verifyJWT, deleteVideo)
-export default router
 router.route("/get-videos").get(verifyJWT, getVideos)
 router.route("/videos/:videoId").get(verifyJWT, getVideoDetails)
 router.route("/update").patch(verifyJWT, updateVideoDetails)
+export default router

@@ -1,18 +1,24 @@
 import mongoose from "mongoose";
 
 const commentSchema = new mongoose.Schema({
-    commenContent:{
+    commentContent:{
         type: String,
         required: [true, "Enter some text"]
     },
-    videoComment:{
+    videoId:{
         type: new mongoose.Schema.Types.ObjectId,
         ref: "Video",
+        required: true
     },
     owner:{
         type: new mongoose.Schema.Types.ObjectId,
         ref:  " User",
+        required: true
     },
+    parentId:{
+        type: new mongoose.Schema.Types.ObjectId,
+        ref:"Comment"
+    }
     
 }, {timestamps: true})
 

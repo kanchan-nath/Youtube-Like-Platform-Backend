@@ -24,8 +24,10 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 import userRouter from "../src/routes/user.route.js"
 import otpRouter from "../src/routes/emailOTP.route.js"
 import videoRouter from "../src/routes/video.route.js"
+import commentRouter from "./routes/comment.route.js"
 app.use("/api/v1/auth", userRouter )
 app.use("/api/v1/auth", otpRouter)
 app.use("/api/v1/video", videoRouter )
+app.use("/api/v1/comments", commentRouter)
 
 export {app}
