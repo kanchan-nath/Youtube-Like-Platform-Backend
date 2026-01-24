@@ -43,6 +43,14 @@ const uploadVideo = asyncHandeler( async(req, res)=>{
     
 })
 
+const getVideos = asyncHandeler(async(req, res)=>{
+    const videos = await Video.find(req.query, "_id")
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200,videos, "All videos list succesfully" ))
+})
+
 const deleteVideo = asyncHandeler(async(req, res)=>{
     const { videoId } = req.params
 
@@ -67,5 +75,6 @@ const updateVideoDetails = asyncHandeler(async(req, res)=>{
 
 export {
     uploadVideo,
-    deleteVideo
+    deleteVideo,
+    getVideos
 }

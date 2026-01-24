@@ -1,6 +1,7 @@
 import { Router } from "express"
 import {
     uploadVideo,
+    getVideos,
     deleteVideo,
 }  from "../controllers/video.controller.js"
 import verifyJWT from "../middlewares/auth.middleware.js"
@@ -22,3 +23,4 @@ router.route("/upload").post(verifyJWT,
     uploadVideo)
 router.route("/delete").delete(verifyJWT, deleteVideo)
 export default router
+router.route("/get-videos").get(verifyJWT, getVideos)
