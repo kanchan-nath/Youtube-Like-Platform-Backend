@@ -80,10 +80,29 @@ const deleteVideo = asyncHandeler(async(req, res)=>{
 })
 
 const updateVideoDetails = asyncHandeler(async(req, res)=>{
-    const { title, videoDescription, tag, genre } = req.body
-    const { videoId } = req.params; 
+    const { title, videoDescription, tag, genre, videoId } = req.body
 
-    const video = await Video.findById( videoId )
+    const video = await Video.findByIdAndUpdate( 
+        videoId,
+        {
+            title:title,
+            videoDescription: videoDescription,
+            tag: tag,
+            genre: genre,
+        },
+        {
+            new: true
+        }
+     )
+
+
+     if(!video){
+        throw new ApiError(400, "Technical Error")
+    }
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, video, "Video updated successfully"))  
     
 })
 
@@ -91,5 +110,6 @@ export {
     uploadVideo,
     deleteVideo,
     getVideos,
-    getVideoDetails
+    getVideoDetails,
+    updateVideoDetails
 }
