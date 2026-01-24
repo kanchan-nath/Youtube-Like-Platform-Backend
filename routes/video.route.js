@@ -3,6 +3,7 @@ import {
     uploadVideo,
     getVideos,
     deleteVideo,
+    getVideoDetails,
 }  from "../controllers/video.controller.js"
 import verifyJWT from "../middlewares/auth.middleware.js"
 import { upload } from "../middlewares/multer.middleware.js"
@@ -24,3 +25,4 @@ router.route("/upload").post(verifyJWT,
 router.route("/delete").delete(verifyJWT, deleteVideo)
 export default router
 router.route("/get-videos").get(verifyJWT, getVideos)
+router.route("/videos/:videoId").get(verifyJWT, getVideoDetails)

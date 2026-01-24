@@ -51,6 +51,20 @@ const getVideos = asyncHandeler(async(req, res)=>{
     .json(new ApiResponse(200,videos, "All videos list succesfully" ))
 })
 
+const getVideoDetails = asyncHandeler(async(req, res)=>{
+    const {videoId} = req.params
+
+    const video = await Video.findById(videoId)
+
+    if(!video){
+        throw new ApiError(400, "Video not found")
+    }
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, video, "Video Details get successfully"))
+})
+
 const deleteVideo = asyncHandeler(async(req, res)=>{
     const { videoId } = req.params
 
@@ -76,5 +90,6 @@ const updateVideoDetails = asyncHandeler(async(req, res)=>{
 export {
     uploadVideo,
     deleteVideo,
-    getVideos
+    getVideos,
+    getVideoDetails
 }
