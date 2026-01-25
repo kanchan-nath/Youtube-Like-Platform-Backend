@@ -25,9 +25,10 @@ import userRouter from "../src/routes/user.route.js"
 import otpRouter from "../src/routes/emailOTP.route.js"
 import videoRouter from "../src/routes/video.route.js"
 import commentRouter from "./routes/comment.route.js"
+import likeRouter from "../src/routes/like.route.js"
 app.use("/api/v1/auth", userRouter )
 app.use("/api/v1/auth", otpRouter)
 app.use("/api/v1/video", videoRouter )
 app.use("/api/v1/comments", commentRouter)
-
+app.use("/api/v1/likes", likeRouter)
 export {app}

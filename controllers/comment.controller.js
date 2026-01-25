@@ -73,6 +73,10 @@ const deleteComemnt = asyncHandeler(async(req, res)=>{
     .json(new ApiResponse(200, {}, "Comment deleted successfully"))
 })
 
+const replyToComment = asyncHandeler(async(req, res)=>{
+    
+})
+
 export {
     createComment,
     getComments,
