@@ -26,9 +26,13 @@ import otpRouter from "../src/routes/emailOTP.route.js"
 import videoRouter from "../src/routes/video.route.js"
 import commentRouter from "./routes/comment.route.js"
 import likeRouter from "../src/routes/like.route.js"
+import playlistRouter from "../src/routes/playlist.route.js"
+
 app.use("/api/v1/auth", userRouter )
 app.use("/api/v1/auth", otpRouter)
 app.use("/api/v1/video", videoRouter )
 app.use("/api/v1/comments", commentRouter)
 app.use("/api/v1/likes", likeRouter)
+app.use("/api/v1/playlists", playlistRouter)
+
 export {app}

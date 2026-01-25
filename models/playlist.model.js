@@ -15,6 +15,7 @@ const playlistSchema = new mongoose.Schema({
     video:[{
         type: new mongoose.Schema.Types.ObjectId,
         ref: "Video",
+        // required: true,
     }],
     owner:{
         type: new mongoose.Schema.Types.ObjectId,
