@@ -21,13 +21,13 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 // app.use(helmet())
 // app.use(compression())
 
-import userRouter from "../src/routes/user.route.js"
-import otpRouter from "../src/routes/emailOTP.route.js"
-import videoRouter from "../src/routes/video.route.js"
+import userRouter from "./routes/user.route.js"
+import otpRouter from "./routes/emailOTP.route.js"
+import videoRouter from "./routes/video.route.js"
 import commentRouter from "./routes/comment.route.js"
-import likeRouter from "../src/routes/like.route.js"
-import playlistRouter from "../src/routes/playlist.route.js"
-import PlanRouter from "../src/routes/plan.route.js"
+import likeRouter from "./routes/like.route.js"
+import playlistRouter from "./routes/playlist.route.js"
+import PlanRouter from "./routes/plan.route.js"
 
 app.use("/api/v1/auth", userRouter )
 app.use("/api/v1/auth", otpRouter)
