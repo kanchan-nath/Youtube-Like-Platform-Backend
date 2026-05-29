@@ -1,0 +1,45 @@
+{
+  "name": "youtube-like-platform-backend-sunnyrawal",
+  "version": "1.0.0",
+  "description": "A production-grade backend system for video streaming and content management.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sunnyrawal/Youtube-Like-Platform-Backend-SunnyRawal.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sunnyrawal/Youtube-Like-Platform-Backend-SunnyRawal/issues"
+  },
+  "homepage": "https://github.com/sunnyrawal/Youtube-Like-Platform-Backend-SunnyRawal#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "bull": "^4.16.5",
+    "cloudinary": "^2.10.0",
+    "compression": "^1.8.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
+    "helmet": "^8.2.0",
+    "ioredis": "^5.11.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.6.3",
+    "multer": "^2.1.1",
+    "nodemailer": "^8.0.10",
+    "redis": "^6.0.0",
+    "ua-parser-js": "^2.0.10"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
