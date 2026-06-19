@@ -369,7 +369,7 @@ npm run test:coverage
 | MongoDB connection failed | Verify MONGODB_URI in .env file and ensure MongoDB service is running |
 | Redis connection error | Check Redis is running on configured host and port (default: localhost:6379) |
 | Cloudinary upload fails | Verify API credentials and ensure account has sufficient storage quota |
-| Email verification not received | Check AUTH_EMAIL and AUTH_PASS are correct, enable Less Secure Apps for Gmail |
+| Email verification not received | Check AUTH_EMAIL and AUTH_PASS are correct, and ensure you are using a 16-character Google App Password rather than your standard password |
 | Video transcoding hangs | Ensure FFmpeg is installed and accessible in system PATH |
 | JWT token invalid | Verify ACCESS_TOKEN_SECRET is set correctly and token has not expired |
 
